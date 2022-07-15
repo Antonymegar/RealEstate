@@ -16,6 +16,7 @@ public class CashDeposit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -28,14 +29,37 @@ public class CashDeposit {
     private String currency;
 
     @NotNull(message="{cashdeposits.date.notnull}")
-    @Future(message = "{cashdeposits.date.future}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDateTime Date;
+
+    @NotNull(message="{cashdeposits.date.notnull}")
+    @Future(message = "{cashdeposits.date.future}")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime dueDate;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name= "plot_id " , nullable =false)
     private Plot plot;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "Depo_installment1",
+            joinColumns =
+                    { @JoinColumn(name = "cashDeposit_id",referencedColumnName = "id" ) },
+            inverseJoinColumns =
+                    { @JoinColumn(name = "installment1_id", referencedColumnName = "id") })
+    private FirstInstallment firstInstallment;
+
+    public CashDeposit(FirstInstallment firstInstallment) {
+        this.firstInstallment = firstInstallment;
+    }
+
+    public FirstInstallment getFirstInstallment() {
+        return firstInstallment;
+    }
+
+    public void setFirstInstallment(FirstInstallment firstInstallment) {
+        this.firstInstallment = firstInstallment;
+    }
 
     public CashDeposit (){
 

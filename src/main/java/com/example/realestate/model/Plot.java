@@ -51,7 +51,7 @@ public class Plot {
     }
 
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+     @ManyToOne(fetch = FetchType.EAGER, optional = false)
      @JoinColumn(name = "category_id", nullable = false)
      private Category category;
 
